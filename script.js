@@ -1,6 +1,12 @@
 const box = document.querySelector(".box");
+
+const dialogBox = document.querySelector('.dialog_box');
+let textDialogBox = document.querySelector('.text');
+let btnDialogBoxClose = document.querySelector('.btn');
+
 let count = 0;
-let result = ''
+let result = '';
+
 
 
 
@@ -31,7 +37,7 @@ function gameState() {
             cells[arr[i][1]].innerHTML == 'x' &&
             cells[arr[i][2]].innerHTML == 'x'
         ) {
-            result = 'Крестики'
+            result = 'Crosses'
             win(result)
             winSound()
         } else if (
@@ -39,7 +45,7 @@ function gameState() {
             cells[arr[i][1]].innerHTML == 'o' &&
             cells[arr[i][2]].innerHTML == 'o'
         ) {
-            result = 'Нолики'
+            result = 'Zeroes'
             win(result)
             winSound()
         }
@@ -47,10 +53,20 @@ function gameState() {
 };
 
 function win(winner) {
-    console.log(winner)
+    textDialogBox.innerHTML = `Win: ${winner} !!!`;
+    dialogBox.style.display = 'block';
+};
+
+//btn start
+btnDialogBoxClose.addEventListener('click', CloseDialogbox);
+function CloseDialogbox() {
+    dialogBox.style.display = 'none';
+    location.reload();
 }
+//btn end
 
 
+// sound start
 const sound = new Audio();
 function playSound() {
     sound.src = './assets/song/vibro.mp3';
@@ -63,3 +79,4 @@ function winSound() {
     audio.currentTime = 0;
     audio.play();
 };
+// sound end
