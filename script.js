@@ -3,16 +3,22 @@ const box = document.querySelector(".box");
 const dialogBox = document.querySelector('.dialog_box');
 let textDialogBox = document.querySelector('.text');
 let btnDialogBoxClose = document.querySelector('.btn');
+let coundMuveWindow = document.querySelector('.coundMuve')
 
 let count = 0;
+let countMuveCrosses = 0;
+let countMuveZeroes = 0;
 let result = '';
 
 
-
-
 box.addEventListener('click', Event => {
-    count % 2 === 0 ? Event.target.innerHTML = 'x' :
+    if (count % 2 === 0) {
+        Event.target.innerHTML = 'x';
+        countMuveCrosses++;
+    } else {
         Event.target.innerHTML = 'o';
+        countMuveZeroes++;
+    }
     count++;
     gameState();
     playSound();
@@ -38,32 +44,44 @@ function gameState() {
             cells[arr[i][2]].innerHTML == 'x'
         ) {
             result = 'Crosses'
-            win(result)
-            winSound()
+            coundMuveWindow.innerHTML = 'Cound Muve: ' +
+                countMuveCrosses + ' !';
+            win(result);
+            winSound();
         } else if (
             cells[arr[i][0]].innerHTML == 'o' &&
             cells[arr[i][1]].innerHTML == 'o' &&
             cells[arr[i][2]].innerHTML == 'o'
         ) {
             result = 'Zeroes'
-            win(result)
+            coundMuveWindow.innerHTML = 'Cound Muve: ' +
+                countMuveZeroes + ' !';
+            win(result);
             winSound()
+
+        } else if (
+            count === 9 &&
+            result !== 'Crosses' &&
+            result !== 'Zeroes'
+        ) {
+            result = 'dead heat'
+            win(result)
+            DeasHeatSound()
         }
     };
 };
-
 function win(winner) {
     textDialogBox.innerHTML = `Win: ${winner} !!!`;
     dialogBox.style.display = 'block';
 };
 
-//btn start
+//btnReset start
 btnDialogBoxClose.addEventListener('click', CloseDialogbox);
 function CloseDialogbox() {
     dialogBox.style.display = 'none';
     location.reload();
 }
-//btn end
+//btnReset end
 
 
 // sound start
@@ -79,4 +97,13 @@ function winSound() {
     audio.currentTime = 0;
     audio.play();
 };
+const audioDeasHeat = new Audio();
+function DeasHeatSound() {
+    audio.src = './assets/song/dead_heat.mp3';
+    audio.currentTime = 0;
+    audio.play();
+};
 // sound end
+
+
+
